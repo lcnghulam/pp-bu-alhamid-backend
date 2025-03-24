@@ -1,19 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-
-// Route::inertia('/', 'Welcome', [
-//     'canLogin' => fn() => Route::has('login'),
-//     'canRegister' => fn() => Route::has('register'),
-//     'laravelVersion' => Application::VERSION,
-//     'phpVersion' => PHP_VERSION,
-// ])->name('welcome');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('/', 'Dashboard')->name('dashboard.index');
     Route::inertia('/data-santri', 'DataSantri')->name('data-santri');
+    Route::inertia('/data-santri/tambah', 'Data-Santri/Tambah')->name('data-santri.tambah');
 });
 
 Route::middleware('auth')->group(function () {

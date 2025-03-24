@@ -6,10 +6,6 @@ import { Head } from '@inertiajs/vue3';
 <template>
     <Head title="Dashboard" />
     <DashboardLayout>
-        <div class="row mb-2 mb-xl-3">
-            <div class="col-auto d-none d-sm-block">
-                <h1 class="d-inline align-middle">Selamat Datang di Dashboard!</h1>
-            </div>
-        </div>
+        <h1 class="d-inline align-middle">Selamat Datang di Dashboard!</h1>
     </DashboardLayout>
 </template>

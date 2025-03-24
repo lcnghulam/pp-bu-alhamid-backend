@@ -5,12 +5,12 @@ import { usePage, Link } from '@inertiajs/vue3';
 // Get Current URL
 const page = usePage();
 
-// **Cek apakah halaman adalah Dashboard**
+// Check-if Dashboard Exist
 const isDashboard = computed(() => {
     return page.url === '/' || page.url === '/dashboard';
 });
 
-// **Bangun breadcrumbs berdasarkan URL**
+// Breadcrumbs Breakdown
 const breadcrumbs = computed(() => {
     const segments = page.url.split('/').filter(segment => segment);
     let fullPath = '';
@@ -18,12 +18,12 @@ const breadcrumbs = computed(() => {
     let items = segments.map((segment, index) => {
         fullPath += `/${segment}`;
         return {
-            name: segment.charAt(0).toUpperCase() + segment.slice(1), // Kapitalisasi nama
-            url: index === segments.length - 1 ? null : fullPath, // Hanya beri URL ke breadcrumb sebelum terakhir
+            name: segment.charAt(0).toUpperCase() + segment.slice(1), 
+            url: index === segments.length - 1 ? null : fullPath, 
         };
     });
 
-    // **Tambahkan Dashboard sebagai root breadcrumbs**
+    // Root of Breadcrumbs
     if (items.length > 0) {
         items.unshift({
             name: 'Dashboard',
@@ -60,7 +60,7 @@ const breadcrumbs = computed(() => {
     li a {
         color: var(--bs-breadcrumb-item-active-color);
         text-decoration: none;
-        font-weight: bolder;
+        font-weight: lighter;
     }
 
     li a:hover {
@@ -68,6 +68,6 @@ const breadcrumbs = computed(() => {
     }
 
     li.breadcrumb-item.active {
-        font-weight: lighter;
+        font-weight: bolder;
     }
 </style>
