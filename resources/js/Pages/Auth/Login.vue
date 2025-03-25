@@ -1,26 +1,57 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
+import axios from 'axios';
+import { Head, router } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
 
+// Background Image
 const backgroundImage = new URL('../../../assets/img/33833704511_94d448186e_k.jpg', import.meta.url).href;
+document.body.style.backgroundImage = `url('${backgroundImage}')`;
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+document.body.style.backgroundRepeat = "no-repeat";
+
+// State untuk Form
+const email = ref('');
+const password = ref('');
+const remember = ref(false);
+const loading = ref(false);
+
+let notyf = null;
 
 onMounted(() => {
-    document.body.style.backgroundImage = `url('${backgroundImage}')`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-});
-
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
-
-const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    notyf = window.notyf;
+    Object.assign(notyf.options, {
+        duration: 5000,
+        position: { x: 'right', y: 'top' },
+        ripple: true,
+        dismissible: true,
     });
+});
+
+// Fungsi Submit Login
+const submit = async () => {
+    loading.value = true;
+    try {
+        const response = await axios.post(route('login'), {
+            email: email.value,
+            password: password.value,
+            remember: remember.value,
+        });
+
+        if (notyf) {
+            notyf.success('Berhasil Login!');
+        }
+
+        router.visit('/', {
+            preserveState: true,
+            preserveScroll: true
+        });
+    } catch (error) {
+        if (notyf) {
+            notyf.error('Email atau Password Salah!');
+        }
+        loading.value = false;
+    }
 };
 </script>
 
@@ -43,28 +74,21 @@ const submit = () => {
                                     <form @submit.prevent="submit">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input v-model="form.email" class="form-control form-control-lg"
-                                                type="email" name="email" placeholder="Enter your email" required />
-                                            <div v-if="form.errors.email" class="text-danger mt-1">
-                                                {{ form.errors.email }}
-                                            </div>
+                                            <input v-model="email" class="form-control form-control-lg" type="email"
+                                                placeholder="Enter your email" required />
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
-                                            <input v-model="form.password" class="form-control form-control-lg"
-                                                type="password" name="password" placeholder="Enter your password"
-                                                required />
-                                            <div v-if="form.errors.password" class="text-danger mt-1">
-                                                {{ form.errors.password }}
-                                            </div>
+                                            <input v-model="password" class="form-control form-control-lg"
+                                                type="password" placeholder="Enter your password" required />
                                             <small>
                                                 <a href="/password/reset">Forgot password?</a>
                                             </small>
                                         </div>
 
                                         <div class="form-check align-items-center">
-                                            <input v-model="form.remember" id="rememberMe" type="checkbox"
+                                            <input v-model="remember" id="rememberMe" type="checkbox"
                                                 class="form-check-input" />
                                             <label class="form-check-label text-small" for="rememberMe">
                                                 Remember me
@@ -73,8 +97,8 @@ const submit = () => {
 
                                         <div class="d-grid gap-2 mt-3">
                                             <button type="submit" class="btn btn-lg btn-primary"
-                                                :class="{ 'opacity-50': form.processing }" :disabled="form.processing">
-                                                Login
+                                                :class="{ 'opacity-50': loading }" :disabled="loading">
+                                                {{ loading ? "Logging in..." : "Login" }}
                                             </button>
                                         </div>
                                     </form>

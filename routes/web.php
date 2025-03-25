@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\DataSantriController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('/', 'Dashboard')->name('dashboard.index');
     Route::inertia('/data-santri', 'DataSantri')->name('data-santri');
-    Route::inertia('/data-santri/tambah', 'Data-Santri/Tambah')->name('data-santri.tambah');
+    Route::get('/data-santri/tambah', [DataSantriController::class, 'tambah'])->name('data-santri.tambah');
 });
 
 Route::middleware('auth')->group(function () {
