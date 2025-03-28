@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, nextTick } from "vue";
+import flatpickr from "flatpickr";
 
 const props = defineProps({
     modelValue: String, // Untuk binding v-model
@@ -10,7 +11,8 @@ const emit = defineEmits(["update:modelValue"]);
 const inputRef = ref(null);
 let fpInstance = null;
 
-onMounted(() => {
+onMounted(async () => {
+    await nextTick()
     fpInstance = flatpickr(inputRef.value, {
         altInput: true,
         altFormat: "j F Y",
@@ -20,9 +22,10 @@ onMounted(() => {
             emit("update:modelValue", dateStr);
         }
     });
+
 });
 
-watch(() => props.modelValue, (newValue) => {
+watch(async () => props.modelValue, (newValue) => {
     if (!newValue && fpInstance) {
         fpInstance.clear(); // Reset tampilan input Flatpickr
     }
@@ -31,5 +34,5 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 <template>
-    <input ref="inputRef" type="text">
+    <input ref="inputRef" type="text" class="form-control flatpickr-human" placeholder="Pilih tanggal..">
 </template>

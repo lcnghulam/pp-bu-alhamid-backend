@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('santri', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nis')->nullable();
+            $table->string('nik', 50)->nullable();
             $table->string('nama_lengkap', 50)->nullable();
             $table->string('tempat_lahir', 30)->nullable();
             $table->date('tgl_lahir')->nullable();
@@ -21,10 +22,12 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->string('email', 50)->nullable();
             $table->string('no_hp', 20)->nullable();
+            $table->text('foto')->nullable();
             $table->date('tgl_masuk')->nullable();
             $table->date('tgl_keluar')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

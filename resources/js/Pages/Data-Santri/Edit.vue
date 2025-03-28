@@ -1,46 +1,23 @@
 <script setup>
-import DataSantri from '@/Pages/Data-Santri/Index.vue';
+import { ref, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
-import FormTambah from '@/Pages/Data-Santri/Partials/FormTambah.vue';
+import DataSantri from '@/Pages/Data-Santri/Index.vue';
+import FormEdit from '@/Pages/Data-Santri/Partials/FormEdit.vue';
 import FormPreview from '@/Pages/Data-Santri/Partials/FormPreview.vue';
 import '@/Pages/Data-Santri/Components/FormSantriCSS.css';
 
-const pageTitle = 'Tambah Data Santri';
+const pageTitle = 'Edit Data Santri';
 
 const props = defineProps({
-    nis: String,
-    // formData: Object,
+    data: Object,
+    fotoPreview: String
 })
-
-const formDataTambah = reactive({
-    nik: '',
-    nama_lengkap: '',
-    tempat_lahir: '',
-    tgl_lahir: '',
-    gender: '',
-    email: '',
-    no_hp: '',
-    alamat: '',
-    tgl_masuk: '',
-    tgl_keluar: '',
-})
-
-// const formDataTambah = computed(() => props.formData);
-
 //Initialize with default Value
 const fotoPreview = ref(null);
 
-onMounted(async () => {
-    await nextTick()
-    if (window.feather) {
-        window.feather.replace();
-    }
-})
-
 // Move watch after fotoPreview declaration.
 watch(fotoPreview, (newVal) => {
-    // console.log('Tambah: Foto preview -> ', newVal);
+    // console.log('Edit: Foto preview -> ', newVal);
 });
 </script>
 
@@ -52,11 +29,12 @@ watch(fotoPreview, (newVal) => {
             <div class="col-12 col-xl-6">
                 <div class="card my-3">
                     <div class="card-header pb-0">
-                        <h5 class="card-title"><i class="align-middle" data-feather="user-plus"></i> Form Data Santri
-                            Baru</h5>
+                        <h5 class="card-title"><i class="align-middle" data-feather="edit"></i> Form Data Edit Santri
+                        </h5>
                     </div>
                     <div class="card-body">
-                        <FormTambah :nis="nis" :form-data="formDataTambah" @updatePreview="fotoPreview = $event" />
+                        <!-- {Form Tambah, NIS : {{ data }}} -->
+                        <FormEdit :data="data" @updatePreview="fotoPreview = $event" />
                     </div>
                 </div>
             </div>
@@ -67,7 +45,7 @@ watch(fotoPreview, (newVal) => {
                                 data-feather="corner-right-down"></i></h5>
                     </div>
                     <div class="card-body">
-                        <FormPreview :nis="nis" :form-data="formDataTambah" :foto-preview="fotoPreview" />
+                        <FormPreview :form-data="data" :nis="data.nis" :foto-preview="fotoPreview" />
                     </div>
                 </div>
             </div>

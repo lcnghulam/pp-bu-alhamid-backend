@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { Head, router } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 
 // Background Image
 const backgroundImage = new URL('../../../assets/img/33833704511_94d448186e_k.jpg', import.meta.url).href;
@@ -16,16 +16,16 @@ const password = ref('');
 const remember = ref(false);
 const loading = ref(false);
 
-let notyf = null;
-
-onMounted(() => {
-    notyf = window.notyf;
-    Object.assign(notyf.options, {
-        duration: 5000,
-        position: { x: 'right', y: 'top' },
-        ripple: true,
-        dismissible: true,
-    });
+onMounted(async () => {
+    await nextTick();
+    if (window.notyf) {
+        Object.assign(window.notyf.options, {
+            duration: 5000,
+            position: { x: 'right', y: 'top' },
+            ripple: true,
+            dismissible: true,
+        });
+    }
 });
 
 // Fungsi Submit Login

@@ -1,18 +1,19 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue';
+import { computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
 
-// Get Current URL
+// Get Current URL (Tanpa Query String)
 const page = usePage();
 
-// Check-if Dashboard Exist
 const isDashboard = computed(() => {
-    return page.url === '/' || page.url === '/dashboard';
+    return page.url === '/';
 });
+
+const cleanUrl = computed(() => page.url.split('?')[0]); // Hapus query string
 
 // Breadcrumbs Breakdown
 const breadcrumbs = computed(() => {
-    const segments = page.url.split('/').filter(segment => segment);
+    const segments = cleanUrl.value.split('/').filter(segment => segment);
     let fullPath = '';
     
     let items = segments.map((segment, index) => {
@@ -27,7 +28,7 @@ const breadcrumbs = computed(() => {
     if (items.length > 0) {
         items.unshift({
             name: 'Dashboard',
-            url: '/dashboard',
+            url: '/',
         });
     }
 

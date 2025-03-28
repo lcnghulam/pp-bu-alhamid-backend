@@ -5,10 +5,11 @@ import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Footer from '@/Components/Footer.vue';
 import MainContent from '@/Components/MainContent.vue';
 
-import { onMounted, watch } from 'vue';
+import { nextTick, onMounted, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
-onMounted( () => {
+onMounted( async () => {
+    await nextTick();
     const t = localStorage.getItem("theme") || "light"; 
     document.body.dataset.theme = t; 
     document.querySelector(".js-stylesheet").setAttribute("href", window.themeUrls[t] || window.themeUrls["light"]);
@@ -30,14 +31,6 @@ onMounted( () => {
     }
 });
 
-const page = usePage();
-watch(page, () => {
-    setTimeout(() => {
-        if (window.feather) {
-            window.feather.replace();
-        }
-    }, 100); // Delay agar Vue selesai render
-});
 </script>
 
 <template>
