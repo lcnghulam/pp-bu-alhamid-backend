@@ -107,7 +107,7 @@ const submitFormEdit = async () => {
     } 
     if (fileFoto) {
         console.log("Foto Baru");
-        // formData.delete("foto");
+        formData.delete("foto");
         formData.append("foto", fileFoto); // Tambahkan file baru jika tidak ada foto
     }
 
