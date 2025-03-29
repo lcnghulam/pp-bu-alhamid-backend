@@ -1,5 +1,10 @@
 * text=auto eol=lf
 
+* text=auto eol=lf
+
+*.blade.php linguist-language=HTML
+*.vue linguist-language=JavaScript
+*.css linguist-vendored
 *.blade.php diff=html
 *.css diff=css
 *.html diff=html
